@@ -1,5 +1,11 @@
-import styles from './page.module.scss'
+import { Page } from '@/components/Page'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
-export default function Index() {
-  return <div className={styles.container}></div>
+export default async function Index() {
+  const supabase = createServerComponentClient({ cookies })
+
+  const { data: notes } = await supabase.from('notes').select('*')
+
+  return <Page notes={notes} />
 }
